@@ -27,7 +27,7 @@ su -c "bin/Cron.sh start" -s /bin/bash otrs
 mailhog
 ```
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 1: Initializing background daemons and local SMTP email traps.*
 
 ### Local DNS Resolution
@@ -37,7 +37,7 @@ To replicate enterprise network routing, local host file manipulation was perfor
 208.8.8.146    socir.ticket.com
 ```
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 2: Corporate DNS mapping via local hosts configuration.*
 
 ---
@@ -49,7 +49,7 @@ To standardize data ingestion from end-users and security tools, distinct ticket
 2. Endpoint Malware Detection: Designed to ingest telemetry data and automated alerts escalated by endpoint detection and response (EDR) or antivirus agents.
 3. Suspicious Login Activity: Created to handle authentication anomalies, including impossible travel alerts and brute-force indicators flagged by identity management solutions.
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 3: Custom security incident types engineered within the administration panel.*
 
 ---
@@ -65,7 +65,7 @@ Each tier is bound by enforceable Service Level Agreements (SLAs) to guarantee o
 | Tier 2 – Incident Responder | Deep-dive logs investigation, host isolation, and active threat containment. | 15 Minutes | 15 Minutes | 60 Minutes |
 | L3 – Threat Hunter / Forensics | Advanced malware analysis, root-cause identification, and hunting exercises. | 15 Minutes | 15 Minutes | 60 Minutes |
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 4: Tiered SOC escalation queue structure and SLA configuration matrix.*
 
 ---
@@ -89,7 +89,7 @@ Thank you,
 SOC Team
 ```
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 5: Mapping automated system-level receipts to the primary ingestion queue.*
 
 ### Tier-Specific Response Templates
@@ -99,7 +99,7 @@ To guarantee standardized communication during incident handling and hand-offs, 
 * Template 2 – Investigation Ongoing (Tier 2): Applied upon escalation to signal that log analysis and system containment steps are being evaluated.
 * Template 3 – Advanced Analysis / Resolution (Tier 3): Reserved for advanced forensics reviews or final resolution summaries prior to closure.
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 6: Custom communication playbook templates managed by tier analysts.*
 
 ---
@@ -109,19 +109,18 @@ To guarantee standardized communication during incident handling and hand-offs, 
 ### 1. Incident Creation
 An end-user logs into the client panel (customer.pl) and submits an emergency report under the Phishing Email Reports category, detailing a suspicious corporate credential request.
 
-![](ADD_IMAGE_LINK_HERE)
 *Figure 7: Simulated client-side submission of an unverified security threat vector.*
 
 ### 2. Automation and Ingestion Check
 The system immediately intercepts the submission, drops the case into the L1 – Alert Analyst pool, and pushes an automated receipt confirmation via the MailHog SMTP loop.
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 8: Verifying automated SMTP response ingestion inside the mail client.*
 
 ### 3. Triage Execution
 The analyst evaluates the metadata from the agent interface (index.pl), applies Template 1 to log the initial investigative step, and prepares the ticket for upstream routing based on structural verification.
 
-![](ADD_IMAGE_LINK_HERE)
+
 *Figure 9: Active ticket administration dashboard demonstrating triage and response deployment.*
 
 ```
