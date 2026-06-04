@@ -1,0 +1,127 @@
+# Security Operations Center (SOC) Incident Response Workflow Engineering
+
+## Overview
+This laboratory documentation details the deployment and configuration of an enterprise-grade incident response lifecycle within an isolated virtual sandbox. By integrating the Znuny (OTRS) ticketing framework with centralized system logic, this deployment models a structured, multi-tier Security Operations Center (SOC) capable of ingesting, triaging, and tracking security incidents against defined Service Level Agreements (SLAs). 
+
+The primary objective of this lab is to move beyond passive log visibility and implement a repeatable, auditable defensive workflow for enterprise incident tracking.
+
+---
+
+## Environment Architecture and Prerequisites
+The infrastructure is built upon a virtualized environment utilizing VMware with network adapters provisioned in NAT mode to maintain secure execution parameters. 
+
+### System Initialization
+The core system relies on specific background processes to handle mail processing, database tasks, and scheduled workflows. The following processes must be started sequentially within the /opt/otrs/ directory:
+
+```bash
+# Navigate to the application root directory
+cd /opt/otrs/
+
+# Start the background task daemon under the otrs system user
+su -c "bin/otrs.Daemon.pl start" -s /bin/bash otrs
+
+# Initialize the automated system cron scheduler
+su -c "bin/Cron.sh start" -s /bin/bash otrs
+
+# Launch MailHog to serve as the local SMTP testing engine
+mailhog
+```
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 1: Initializing background daemons and local SMTP email traps.*
+
+### Local DNS Resolution
+To replicate enterprise network routing, local host file manipulation was performed on the host operating system (C:\Windows\System32\drivers\etc\hosts). This maps the Linux appliance IP address directly to a fully qualified domain name (FQDN), enabling seamless browser routing:
+
+```text
+208.8.8.146    socir.ticket.com
+```
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 2: Corporate DNS mapping via local hosts configuration.*
+
+---
+
+## Security Incident Classification
+To standardize data ingestion from end-users and security tools, distinct ticket types were engineered within the administrative console to classify incoming threat signatures:
+
+1. Phishing Email Reports: Engineered to capture user reports regarding credential harvesting links, suspicious attachments, and spoofed internal authority figures.
+2. Endpoint Malware Detection: Designed to ingest telemetry data and automated alerts escalated by endpoint detection and response (EDR) or antivirus agents.
+3. Suspicious Login Activity: Created to handle authentication anomalies, including impossible travel alerts and brute-force indicators flagged by identity management solutions.
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 3: Custom security incident types engineered within the administration panel.*
+
+---
+
+## Defensive Queue Architecture and SLA Matrix
+The system employs a strict tier-isolated defensive model. Incidents are systematically routed through distinct queues based on complexity, handling constraints, and investigative depth. 
+
+Each tier is bound by enforceable Service Level Agreements (SLAs) to guarantee operational efficiency and track metrics like Time-to-Acknowledge (TTA) and Time-to-Remediate (TTR).
+
+| Operational Queue | Core Responsibility | First Response Target | Update Windows | Resolution SLA |
+| :--- | :--- | :--- | :--- | :--- |
+| L1 – Alert Analyst | Frontline monitoring, initial alert triage, and false-positive filtering. | 15 Minutes | 15 Minutes | 60 Minutes |
+| Tier 2 – Incident Responder | Deep-dive logs investigation, host isolation, and active threat containment. | 15 Minutes | 15 Minutes | 60 Minutes |
+| L3 – Threat Hunter / Forensics | Advanced malware analysis, root-cause identification, and hunting exercises. | 15 Minutes | 15 Minutes | 60 Minutes |
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 4: Tiered SOC escalation queue structure and SLA configuration matrix.*
+
+---
+
+## Communication Automation and Lifecycle Flow
+
+### System Auto-Response Configuration
+To maintain operational tracking and assure stakeholders, a system-level automated response (Auto Reply – Ticket Received) was engineered and hard-linked directly to the L1 – Alert Analyst ingestion queue. This uses dynamic ticket variable parsing to establish immediate client communication tracking:
+
+```text
+Subject: [Ticket#<OTRS_TICKET_TicketNumber>] Ticket Received
+
+Hello,
+
+Your ticket has been successfully received by the Security Operations Center.
+Our team is currently reviewing the issue and will provide updates as soon as possible.
+
+Please do not reply to this message unless additional information is required.
+
+Thank you,
+SOC Team
+```
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 5: Mapping automated system-level receipts to the primary ingestion queue.*
+
+### Tier-Specific Response Templates
+To guarantee standardized communication during incident handling and hand-offs, modular response templates were provisioned across the lifecycle:
+
+* Template 1 – Initial Analysis (Tier 1): Informs the user that initial validation and threat triage are actively underway.
+* Template 2 – Investigation Ongoing (Tier 2): Applied upon escalation to signal that log analysis and system containment steps are being evaluated.
+* Template 3 – Advanced Analysis / Resolution (Tier 3): Reserved for advanced forensics reviews or final resolution summaries prior to closure.
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 6: Custom communication playbook templates managed by tier analysts.*
+
+---
+
+## Operational Verification Walkthrough
+
+### 1. Incident Creation
+An end-user logs into the client panel (customer.pl) and submits an emergency report under the Phishing Email Reports category, detailing a suspicious corporate credential request.
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 7: Simulated client-side submission of an unverified security threat vector.*
+
+### 2. Automation and Ingestion Check
+The system immediately intercepts the submission, drops the case into the L1 – Alert Analyst pool, and pushes an automated receipt confirmation via the MailHog SMTP loop.
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 8: Verifying automated SMTP response ingestion inside the mail client.*
+
+### 3. Triage Execution
+The analyst evaluates the metadata from the agent interface (index.pl), applies Template 1 to log the initial investigative step, and prepares the ticket for upstream routing based on structural verification.
+
+![](ADD_IMAGE_LINK_HERE)
+*Figure 9: Active ticket administration dashboard demonstrating triage and response deployment.*
+
+```
