@@ -16,3 +16,16 @@ This project demonstrates the deployment of a centralized logging and automated 
 - Successful visualization of "Failed Password" signatures within the Kibana dashboard.
 - Automated firewall-level banning of malicious IP addresses following unauthorized access attempts.
 - The Kibana logs showing the "ban" event
+
+
+
+
+## Operational Telemetry & Verification
+
+The following artifacts validate the successful configuration of the remote administration channel and the automated detection pipeline:
+
+* **Secure Host Key Verification:** Checking the SHA-256 host identity via SecureCRT.
+  ![SSH Verification](assets/secure%20crt%20with%20SHA.png)
+
+* **SIEM Incident Triage:** The ultimate validation showing the automated 'ban' log captured inside Kibana.
+  ![Kibana Defended Log](assets/connecting%20secure%20crt%20to%20kibana.jpg)
