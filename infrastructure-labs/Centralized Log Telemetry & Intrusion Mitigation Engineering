@@ -1,1 +1,18 @@
+# Intrusion Detection & Response Pipeline
+This project demonstrates the deployment of a centralized logging and automated mitigation pipeline to defend against brute-force attacks in a Linux environment.
 
+## Architecture
+- **Target:** Rocky Linux Server
+- **Log Aggregator:** Filebeat (configured to monitor `/var/log/secure`)
+- **SIEM:** ELK Stack (Elasticsearch, Logstash, Kibana)
+- **Mitigation:** Fail2Ban (Intrusion Prevention Framework)
+
+## Technical Implementation
+- **Log Telemetry:** Configured `filebeat.yml` to ingest authentication logs into an ELK stack for real-time indexing and visualization.
+- **Automated Mitigation:** Deployed `Fail2Ban` to monitor the `/var/log/secure` directory for repetitive authentication failures.
+- **Policy Enforcement:** Configured `jail.local` with a `maxretry` threshold of 5, triggering a `firewall-cmd` ban on the attacking source IP.
+
+## Key Results
+- Successful visualization of "Failed Password" signatures within the Kibana dashboard.
+- Automated firewall-level banning of malicious IP addresses following unauthorized access attempts.
+- The Kibana logs showing the "ban" event
