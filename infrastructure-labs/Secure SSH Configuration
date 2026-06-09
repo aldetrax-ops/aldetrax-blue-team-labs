@@ -1,0 +1,20 @@
+## Secure SSH Configuration
+
+Weak SSH Configuration?
+Outdated cryptographic algorithms expose servers to modern brute-force and cryptanalysis attacks. We use `ssh-audit` to harden our SSH server configurations.
+
+### Verification Step
+Run the audit tool against the target server:
+```bash
+python3 -m pip install ssh-audit
+ssh-audit <target-ip>
+
+If the report flags any deprecated algorithms, weak ciphers (e.g., CBC modes), or weak MACs:
+
+Open the SSH daemon configuration file (usually /etc/ssh/sshd_config).
+
+Explicitly define secure KexAlgorithms, Ciphers, and MACs (refer to the recommended output provided at the bottom of the ssh-audit report).
+
+Restart the SSH service: sudo systemctl restart ssh
+
+Re-run ssh-audit until the report returns clean (green) with no warnings or errors.
